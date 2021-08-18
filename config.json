@@ -1,0 +1,71 @@
+{
+    "telegram_token": "placeYourTokenHere",
+    "channel": "placeYourChannelIdHere",
+    "command": {
+        "command_delayTime": 30,
+        "command_deleteTime": 250
+    },
+    "tokens": {
+        "mainToken": {
+            "token": "0x9c9ac8b098a7d47ed1834599ce2dc29cb94103e9",
+            "deadAdress": "0x000000000000000000000000000000000000dead",
+            "allowMultipleTokens": true
+        },
+        "pancakeRouter": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+        "BNBToken": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+        "USDTtoken": "0x55d398326f99059fF775485246999027B3197955"
+    },
+    "nightMode": {
+        "enabled": true,
+        "open": 8,
+        "close": 2
+    },
+    "social": {
+        "discord": "https://discord.gg/7K2ruN97vN",
+        "telegram": "https://t.me/poolpartyfinance",
+        "blog": "https://academyulianov.com/",
+        "defi": "https://poolpartyfinance.io",
+        "whitepaper": "https://www.poolpartyfinance.com/theme-assets/Whitepaper%20-%20Pool%20Party.pdf"
+    },
+    "messages": {
+        "running": "Pong!",
+        "contract": "Contract: ",
+        "welcome": {
+            "enabled": true,
+            "group": "welcome to the *group*",
+            "content": "this should be a *cool* message"
+        },
+        "roadmap": [
+            "*Roadmap*",
+            "", 
+            "✅ 14 june 2021 – Listing on PancakeSwap",
+            "✅ 27 june 2021 – Update – New website, platform overview, ADS pre offer ",
+            "✅ 28 june 2021 – Launch Marketing Campaigns"
+        ],
+        "nightMode": {
+            "open": "Good morning! Our chat is opened!",
+            "close": {
+                "headMessage": "Good Night. Our chat is closing. We're going to open 8 am (utc-3)."
+            },
+            "template": {
+                "Contrato": {
+                    "link": "https://t.me/poolpartyfinance/27771",
+                    "joinLastRow": false
+                },
+                "RoadMap": {
+                    "link": "https://t.me/poolpartyfinance/55898",
+                    "joinLastRow": true
+                },
+                "Gráfico": {
+                    "link": "https://t.me/poolpartyfinance/39539",
+                    "joinLastRow": true
+                },
+                "Configure Metamask": {
+                    "link": "https://t.me/poolpartyfinance/1455",
+                    "joinLastRow": false
+                }
+            }
+        }
+        
+    }
+}
