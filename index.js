@@ -162,21 +162,28 @@ bot.command('supply', async (ctx) => {
     let isBEP20Token = regex.test(tokenAddress);
     if(!isBEP20Token) return; // safe check
 
-    let supply = await getSupply(tokenAddress);
-    let symbol = await getSymbol(tokenAddress);
-    let token = (symbol) ? `Supply ${symbol}`: 'Supply' 
-    let decimals = (supply.decimals) ? new BigNumber(supply.decimals): new BigNumber(8);
-    let minted = (supply.minted) ? (new BigNumber(supply.minted).div(new BigNumber(Math.pow(10, decimals)))): 0
-    let burned = (supply.burned) ? (new BigNumber(supply.burned).div(new BigNumber(Math.pow(10, decimals)))): 0
-    
     try {
-        circulation = (await new BigNumber(minted).minus(new BigNumber(burned))).toFixed(0)
-    } catch {
-        circulation = 0;
+        let supply = await getSupply(tokenAddress);
+        let symbol = await getSymbol(tokenAddress);
+        let token = (symbol) ? `Supply ${symbol}`: 'Supply' 
+        let decimals = (supply.decimals) ? new BigNumber(supply.decimals): new BigNumber(8);
+        let minted = (supply.minted) ? (new BigNumber(supply.minted).div(new BigNumber(Math.pow(10, decimals)))): 0
+        let burned = (supply.burned) ? (new BigNumber(supply.burned).div(new BigNumber(Math.pow(10, decimals)))): 0
+        
+        try {
+            circulation = (await new BigNumber(minted).minus(new BigNumber(burned))).toFixed(0)
+        } catch {
+            circulation = 0;
+        }
+        ctx.replyWithMarkdown(`*${token}*\nMinted: *${numFormat(minted)}*\nBurned: *${numFormat(burned)}*\nCirculation Supply: *${numFormat(circulation)}*`).then((e) => {
+            setTimeout(() => delMessage(ctx, e.message_id), command_deleteTime)
+        })
+    } catch(err) {
+        ctx.reply(config.messages.error).then((e) => {
+            setTimeout(() => delMessage(ctx, e.message_id), command_deleteTime)
+        })
     }
-    ctx.replyWithMarkdown(`*${token}*\nMinted: *${numFormat(minted)}*\nBurned: *${numFormat(burned)}*\nCirculation Supply: *${numFormat(circulation)}*`).then((e) => {
-        setTimeout(() => delMessage(ctx, e.message_id), command_deleteTime)
-    })
+    
 })
 
 bot.command('price', async (ctx) => {
@@ -194,13 +201,20 @@ bot.command('price', async (ctx) => {
     let isBEP20Token = regex.test(tokenAddress);
     if(!isBEP20Token) return; // safe check
 
-    let bnbPrice = await new BigNumber(await calcBNBPrice());
-    let priceInBnb = await new BigNumber(await calcSell(1, tokenAddress));
-    let symbol = await getSymbol(tokenAddress);
-
-    if(!bnbPrice || !priceInBnb || !symbol) return;
-    priceFix = (priceInBnb.toString().indexOf('e-') > -1) ? Number(priceInBnb.toString().split('.')[1].split('e-')[0].length) + Number(priceInBnb.toString().split('.')[1].split('e-')[1]) : 8
-    ctx.replyWithHTML(`[Price <b>${symbol}</b>]: \n\nPrice in BNB: <b>${priceInBnb.toFixed(priceFix).toString()}</b>\nPrice in USD: <b>U$ ${(priceInBnb.times(bnbPrice).toFixed(priceFix).toString())}\n\n</b>BNB Price: <b>U$ ${bnbPrice.toFixed(2)}</b>`)
+    try {
+        let bnbPrice = await new BigNumber(await calcBNBPrice());
+        let priceInBnb = await new BigNumber(await calcSell(1, tokenAddress));
+        let symbol = await getSymbol(tokenAddress);
+    
+        if(!bnbPrice || !priceInBnb || !symbol) return;
+        priceFix = (priceInBnb.toString().indexOf('e-') > -1) ? Number(priceInBnb.toString().split('.')[1].split('e-')[0].length) + Number(priceInBnb.toString().split('.')[1].split('e-')[1]) : 8
+        ctx.replyWithHTML(`[Price <b>${symbol}</b>]: \n\nPrice in BNB: <b>${priceInBnb.toFixed(priceFix).toString()}</b>\nPrice in USD: <b>U$ ${(priceInBnb.times(bnbPrice).toFixed(priceFix).toString())}\n\n</b>BNB Price: <b>U$ ${bnbPrice.toFixed(2)}</b>`)
+    
+    } catch(err) {
+        ctx.reply(config.messages.error).then((e) => {
+            setTimeout(() => delMessage(ctx, e.message_id), command_deleteTime)
+        })
+    }
 })
 
 /****** that's it ******/

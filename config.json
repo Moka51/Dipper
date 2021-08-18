@@ -30,6 +30,7 @@
     "messages": {
         "running": "Pong!",
         "contract": "Contract: ",
+        "error": "An error has ocurred!",
         "welcome": {
             "enabled": true,
             "group": "welcome to the *group*",
